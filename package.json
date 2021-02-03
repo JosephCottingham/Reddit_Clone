@@ -1,0 +1,23 @@
+{
+  "name": "reddit_clone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JosephCottingham/Reddit_Clone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JosephCottingham/Reddit_Clone/issues"
+  },
+  "homepage": "https://github.com/JosephCottingham/Reddit_Clone#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0"
+  }
+}
