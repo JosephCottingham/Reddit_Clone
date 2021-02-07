@@ -27,13 +27,11 @@ router.post('/new', (req, res) => {
 // single post page
 router.get('/:postId', (req, res) => {
   // LOOK UP THE POST
-  Post.findById(req.params.postId).lean()
-    .then(post => {
-      res.render("posts-show", { post });
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
+  Post.findById(req.params.postId).lean().populate('comments').then((post) => {
+    res.render('post-show', { post })
+  }).catch((err) => {
+    console.log(err.message)
+  })
 })
 
 
