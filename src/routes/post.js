@@ -25,7 +25,14 @@ router.post('/new', (req, res) => {
 
 // single post page
 router.get('/:postId', (req, res) => {
-    return res.send(`Post with id ${req.params.postId}`)
+  // LOOK UP THE POST
+  Post.findById(req.params.postId).lean()
+    .then(post => {
+      res.render("posts-show", { post });
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
 })
 
 /** Route to update an existing message. */
