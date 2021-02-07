@@ -20,10 +20,7 @@ router.post('/new', (req, res) => {
         summary: req.body.summary
     })
 
-    return res.send({
-        message: 'Create new post',
-        data: req.body
-    })
+    return res.redirect('/')
 })
 
 // single post page

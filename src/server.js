@@ -14,10 +14,6 @@ app.set('view engine', 'handlebars');
 // Database Setup
 require('./config/db-setup.js')
 
-// Routes
-const router = require('./routes/index.js')
-app.use(router)
-
 // Use Body Parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,8 +21,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Add after body parser initialization!
 app.use(expressValidator());
 
+// Routes
+const router = require('./routes/index.js')
+app.use(router)
+
+const Post = require('./models/post.js')
+
+
 app.get('/', (req, res) => {
-  res.render('home');
+  Post.find({}).lean()
+    .then(posts => {
+      res.render('posts-index', { posts });
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
 })
 
 app.listen(port, () => {
