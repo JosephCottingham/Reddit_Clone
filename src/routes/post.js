@@ -8,12 +8,11 @@ router.get('/', (req, res) => {
     res.render('posts-new');
 })
 
-// single post page
-router.get('/:postId', (req, res) => {
-    return res.send(`Post with id ${req.params.postId}`)
+// new post
+router.get('/new', (req, res) => {
+    res.render('posts-new');
 })
 
-// new post
 router.post('/new', (req, res) => {
     Post.create({
         title: req.body.title,
@@ -25,6 +24,11 @@ router.post('/new', (req, res) => {
         message: 'Create new post',
         data: req.body
     })
+})
+
+// single post page
+router.get('/:postId', (req, res) => {
+    return res.send(`Post with id ${req.params.postId}`)
 })
 
 /** Route to update an existing message. */
