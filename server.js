@@ -10,9 +10,10 @@ const port = 3000
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
+app.set('views', 'src/views')
 
 // Database Setup
-require('./config/db-setup.js')
+require('./src/config/db-setup.js')
 
 // Use Body Parser
 app.use(bodyParser.json());
@@ -22,10 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 
 // Routes
-const router = require('./routes/index.js')
+const router = require('./src/routes/index.js')
 app.use(router)
 
-const Post = require('./models/post.js')
+const Post = require('./src/models/post.js')
 
 
 app.get('/', (req, res) => {
@@ -41,3 +42,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
+
+module.exports = app;
