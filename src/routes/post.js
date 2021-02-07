@@ -17,7 +17,8 @@ router.post('/new', (req, res) => {
     Post.create({
         title: req.body.title,
         url: req.body.url,
-        summary: req.body.summary
+        summary: req.body.summary,
+        subreddit: req.body.subreddit
     })
 
     return res.redirect('/')
@@ -35,17 +36,16 @@ router.get('/:postId', (req, res) => {
     });
 })
 
-/** Route to update an existing message. */
-router.put('/:messageId', (req, res) => {
-    return res.send({
-        message: `Update message with id ${req.params.messageId}`,
-        data: req.body
-    })
-})
 
-/** Route to delete a message. */
-router.delete('/:messageId', (req, res) => {
-    return res.send(`Delete message with id ${req.params.messageId}`)
-})
+// SUBREDDIT
+router.get("/n/:subreddit", function(req, res) {
+    Post.find({ subreddit: req.params.subreddit }).lean()
+    .then(posts => {
+      res.render("posts-index", { posts });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 module.exports = router
