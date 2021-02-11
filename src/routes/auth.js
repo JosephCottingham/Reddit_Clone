@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 
 // Signup page
 router.get("/sign-up", (req, res) => {
+    var currentUser = req.user;
     res.render("sign-up");
 });
 
@@ -38,11 +39,12 @@ router.get('/logout', (req, res) => {
 
 // LOGIN FORM
 router.get('/login', (req, res) => {
+    var currentUser = req.user;
     res.render('login');
 });
 
 // LOGIN
-app.post("/login", (req, res) => {
+router.post("/login", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     // Find this user name

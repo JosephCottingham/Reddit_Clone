@@ -34,6 +34,7 @@ const Post = require('./src/models/post.js')
 
 
 app.get('/', (req, res) => {
+  var currentUser = req.user;
   Post.find({}).lean()
     .then(posts => {
       res.render('posts-index', { posts });
@@ -46,5 +47,20 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
+
+
+var checkAuth = (req, res, next) => {
+  console.log("Checking authentication");
+  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+    req.user = null;
+  } else {
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+  }
+
+  next();
+};
+app.use(checkAuth);
 
 module.exports = app;
