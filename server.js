@@ -3,7 +3,8 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
-
+var cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = 3000
@@ -11,6 +12,9 @@ const port = 3000
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.set('views', 'src/views')
+
+// Cookie parser
+app.use(cookieParser());
 
 // Database Setup
 require('./src/config/db-setup.js')
