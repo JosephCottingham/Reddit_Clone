@@ -22,6 +22,7 @@ router.get('/', (req, res) => {
   console.log(currentUser);
   Post.find({}).lean().populate('author')
     .then(posts => {
+      posts.sort(function(a,b) {return (a.voteScore < b.voteScore) ? 1 : ((b.voteScore < a.voteScore) ? -1 : 0);} );
       res.render('posts-index', {
         'posts':posts,
         'currentUser':currentUser

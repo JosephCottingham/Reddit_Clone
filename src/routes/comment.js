@@ -8,6 +8,9 @@ const Comment = require('../models/comment')
 // CREATE Comment
 router.post("/:postId/comments", function (req, res) {
   var currentUser = req.user;
+  if (currentUser==null) {
+    return res.redirect(`/login`);
+  }
   // INSTANTIATE INSTANCE OF MODEL
   if (currentUser) {
     const comment = new Comment({

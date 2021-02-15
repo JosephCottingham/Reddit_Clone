@@ -8,6 +8,9 @@ var User = require("../models/user");
 // NEW REPLY
 router.get("/posts/:postId/comments/:commentId/replies/new", (req, res) => {
     var currentUser = req.user;
+    if (currentUser==null) {
+        return res.redirect(`/login`);
+    }
     let post;
     Post.findById(req.params.postId).lean()
         .then(p => {
@@ -28,6 +31,10 @@ router.get("/posts/:postId/comments/:commentId/replies/new", (req, res) => {
 
 // CREATE REPLY
 router.post("/posts/:postId/comments/:commentId/replies", (req, res) => {
+    var currentUser = req.user
+    if (currentUser==null) {
+        return res.redirect(`/login`);
+    }
     // TURN REPLY INTO A COMMENT OBJECT
     const reply = new Comment(req.body);
     reply.author = req.user._id

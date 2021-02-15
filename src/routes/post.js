@@ -15,14 +15,19 @@ router.get('/', (req, res) => {
 // new post
 router.get('/new', (req, res) => {
   var currentUser = req.user;
-  res.render('posts-new', { 'currentUser':currentUser });
+  if (currentUser==null) {
+    return res.redirect(`/login`);
+  }
+  var currentUser = req.user;
+  res.render('posts-new', { currentUser });
 })
 
 router.post('/new', (req, res) => {
   var currentUser = req.user;
-  console.log(currentUser);
+  if (currentUser==null) {
+    return res.redirect(`/login`);
+  }  
   if (currentUser) {
-    console.log('req.body');
     var post = new Post({
       title: req.body.title,
       url: req.body.url,
@@ -31,6 +36,9 @@ router.post('/new', (req, res) => {
       author:  mongoose.Types.ObjectId(currentUser._id),
     })
     post.author=req.user._id;
+    post.upVotes = [];
+    post.downVotes = [];
+    post.voteScore = 0;
     post.save().then(post => {
         return User.findById(req.user._id);
     }).then(user => {
@@ -50,10 +58,12 @@ router.post('/new', (req, res) => {
 // single post page
 router.get('/:postId', (req, res) => {
   var currentUser = req.user;
+  console.log(currentUser);
   // LOOK UP THE POST
   Post.findById(req.params.postId).populate('comments').lean().then((post) => {
     res.render('post-show', {
-      post, currentUser
+      post,
+      currentUser
     })
   }).catch((err) => {
     console.log(err.message)
@@ -75,6 +85,25 @@ router.get("/n/:subreddit", function (req, res) {
     .catch(err => {
       console.log(err);
     });
+});
+
+router.put("/:id/vote-up", function(req, res) {
+  Post.findById(req.params.id).exec(function(err, post) {
+    post.upVotes.push(req.user._id);
+    post.voteScore = post.voteScore + 1;
+    post.save();
+    res.status(200);
+  });
+});
+
+router.put("/:id/vote-down", function(req, res) {
+  Post.findById(req.params.id).exec(function(err, post) {
+    post.downVotes.push(req.user._id);
+    post.voteScore = post.voteScore - 1;
+    post.save();
+
+    res.status(200);
+  });
 });
 
 module.exports = router
