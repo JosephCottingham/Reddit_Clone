@@ -19,14 +19,18 @@ router.post("/:postId/comments", function (req, res) {
     comment
       .save()
       .then(comment => {
-        return Post.findById(req.params.postId);
+        return Promise.all([
+          Post.findById(req.params.postId)
+        ]);
       })
-      .then(post => {
+      .then(([post, user]) => {
         post.comments.unshift(comment);
-        return post.save();
+        return Promise.all([
+          post.save()
+        ]);
       })
       .then(post => {
-        res.redirect(`/posts/` + req.params.postId);
+        res.redirect(`/posts/${req.params.postId}`);
       })
       .catch(err => {
         console.log(err);
