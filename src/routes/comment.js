@@ -6,18 +6,15 @@ const Comment = require('../models/comment')
 
 
 // CREATE Comment
-router.post("/:postId/comments", function(req, res) {
-    var currentUser = req.user;
-    // INSTANTIATE INSTANCE OF MODEL
-    if(currentUser==null) {
-      return
-    }
-    
+router.post("/:postId/comments", function (req, res) {
+  var currentUser = req.user;
+  // INSTANTIATE INSTANCE OF MODEL
+  if (currentUser) {
     const comment = new Comment({
       content: req.body.content,
-      author: currentUser,
+      author: currentUser._id,
     });
-  
+
     // SAVE INSTANCE OF Comment MODEL TO DB
     comment
       .save()
@@ -29,11 +26,14 @@ router.post("/:postId/comments", function(req, res) {
         return post.save();
       })
       .then(post => {
-        res.redirect(`/posts/`+req.params.postId);
+        res.redirect(`/posts/` + req.params.postId);
       })
       .catch(err => {
         console.log(err);
       });
-  });
+  } else {
+    return res.status(401); // UNAUTHORIZED
+  }
+});
 
 module.exports = router
