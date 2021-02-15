@@ -23,32 +23,6 @@ require('./src/config/db-setup.js')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Add after body parser initialization!
-app.use(expressValidator());
-
-// Routes
-const router = require('./src/routes/index.js')
-app.use(router)
-
-const Post = require('./src/models/post.js')
-
-
-app.get('/', (req, res) => {
-  var currentUser = req.user;
-  Post.find({}).lean()
-    .then(posts => {
-      res.render('posts-index', { posts });
-    })
-    .catch(err => {
-      console.log(err.message);
-    })
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
-
-
 var checkAuth = (req, res, next) => {
   console.log("Checking authentication");
   if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
@@ -62,5 +36,20 @@ var checkAuth = (req, res, next) => {
   next();
 };
 app.use(checkAuth);
+
+// Add after body parser initialization!
+app.use(expressValidator());
+
+
+// Routes
+const router = require('./src/routes/index.js')
+app.use(router)
+
+const Post = require('./src/models/post.js')
+
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
 
 module.exports = app;

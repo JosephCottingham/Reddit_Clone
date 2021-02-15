@@ -12,17 +12,23 @@ router.use('/posts', postRoutes)
 router.use('/posts', commentRoutes)
 router.use('/', authRoutes)
 
-router.get("/", (req, res) => {
-    var currentUser = req.user;
-  
-    Post.find({})
-      .then(posts => {
-        res.render("posts-index", { posts, currentUser });
-      })
-      .catch(err => {
-        console.log(err.message);
+router.get('/', (req, res) => {
+  var currentUser = req.user;
+  console.log('currentUser');
+  console.log(req.user);
+  console.log(currentUser);
+  Post.find({}).lean().populate('author')
+    .then(posts => {
+      res.render('posts-index', {
+        'posts':posts,
+        'currentUser':currentUser
       });
-  });
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
+})
+
 
 
 module.exports = router

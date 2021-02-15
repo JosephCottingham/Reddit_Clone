@@ -7,8 +7,16 @@ const Comment = require('../models/comment')
 
 // CREATE Comment
 router.post("/:postId/comments", function(req, res) {
+    var currentUser = req.user;
     // INSTANTIATE INSTANCE OF MODEL
-    const comment = new Comment(req.body);
+    if(currentUser==null) {
+      return
+    }
+    
+    const comment = new Comment({
+      content: req.body.content,
+      author: currentUser,
+    });
   
     // SAVE INSTANCE OF Comment MODEL TO DB
     comment

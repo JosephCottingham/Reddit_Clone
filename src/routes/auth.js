@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 // Signup page
 router.get("/sign-up", (req, res) => {
     var currentUser = req.user;
-    res.render("sign-up");
+    res.render("sign-up", { currentUser });
 });
 
 // Signup page
@@ -40,7 +40,8 @@ router.get('/logout', (req, res) => {
 // LOGIN FORM
 router.get('/login', (req, res) => {
     var currentUser = req.user;
-    res.render('login');
+    var currentUser = req.user;
+    res.render('login', { currentUser });
 });
 
 // LOGIN

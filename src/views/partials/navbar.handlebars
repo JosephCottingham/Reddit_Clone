@@ -4,8 +4,6 @@
             <li><a class="nav-link active" href="/">Home</a></li>
             {{#if currentUser}}
             <li><a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a></li>
-            {{/if}}
-            {{#if currentUser}}
             <li><a href="/logout">Logout</a></li>
             {{else}}
             <li><a href="/login">Login</a></li>
