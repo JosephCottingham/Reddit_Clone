@@ -16,6 +16,8 @@ app.set('views', 'src/views')
 // Cookie parser
 app.use(cookieParser());
 
+app.use(express.static('src/public'))
+
 // Database Setup
 require('./src/config/db-setup.js')
 
