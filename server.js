@@ -47,8 +47,6 @@ app.use(expressValidator());
 const router = require('./src/routes/index.js')
 app.use(router)
 
-const Post = require('./src/models/post.js')
-
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
